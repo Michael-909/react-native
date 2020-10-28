@@ -34,7 +34,7 @@ const CategoriesScreen = (props) => {
 CategoriesScreen.navigationOptions = navData => {
 	return {
 		headerTitle: 'Meal Categories',
-		headerLeft: () => {
+		headerLeft: () => {return (
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
 				<Item
 					title="Menu"
@@ -44,7 +44,7 @@ CategoriesScreen.navigationOptions = navData => {
 					}}
 				/>
 			</HeaderButtons>
-		}
+		)}
 	};
 };
 
