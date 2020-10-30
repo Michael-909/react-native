@@ -42,9 +42,11 @@ MealDetailScreen.navigationOptions = (data) => {
 	const selectedMeal = MEALS.find(x => x.id === data.navigation.getParam('mealId'));
 	return {
 		headerTitle: selectedMeal.title,
-		headerRight: (<HeaderButtons HeaderButtonComponent={HeaderButton}>
-			<Item title='Favorite' iconName='ios-star' onPress={() => {}} />
-		</HeaderButtons>)
+		headerRight: () => {return(
+			<HeaderButtons HeaderButtonComponent={HeaderButton}>
+				<Item title='Favorite' iconName='ios-star' onPress={() => {}} />
+			</HeaderButtons>
+		)}
 	};
 };
 
