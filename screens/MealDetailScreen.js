@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import DefaultText from '../components/DefaultText';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavorite } from '../store/actions/meals';
+import { useCallback } from 'react/cjs/react.development';
 
 const ListItem = props => {
 	return (
@@ -18,6 +20,15 @@ const MealDetailScreen = (props) => {
 	const mealId = props.navigation.getParam('mealId');
 	const availabeMeals = useSelector(state => state.meals.meals);
 	const selectedMeal = availabeMeals.find(x => x.id === mealId);
+	const dispatch = useDispatch();
+
+	const toggleFavoriteHandler = useCallback(() => {
+		dispatch(toggleFavorite(mealId));
+	}, [dispatch, mealId]);
+
+	useEffect(() => {
+		props.navigation.setParams({toggleFav: toggleFavoriteHandler});
+	}, [toggleFavoriteHandler]);
 
 	return (
 		<ScrollView>
@@ -40,13 +51,13 @@ const MealDetailScreen = (props) => {
 };
 
 MealDetailScreen.navigationOptions = (data) => {
-	const availabeMeals = useSelector(state => state.meals.meals);
-	const selectedMeal = availabeMeals.find(x => x.id === data.navigation.getParam('mealId'));
+	const mealTitle = data.navigation.getParam('mealTitle');
+	const toggleFavorite = data.navigation.getParam('toggleFav');
 	return {
-		headerTitle: selectedMeal.title,
+		headerTitle: mealTitle,
 		headerRight: () => {return(
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
-				<Item title='Favorite' iconName='ios-star' onPress={() => {}} />
+				<Item title='Favorite' iconName='ios-star' onPress={toggleFavorite} />
 			</HeaderButtons>
 		)}
 	};
